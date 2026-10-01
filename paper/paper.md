@@ -36,7 +36,7 @@ set of counters active in year $`t`$. We compare several aggregation rules with 
 official index $`I_t`$, for example the median rule
 
 ```math
-\hat I_t = 100 \cdot \frac{\operatorname{median}_{s \in S_t} \bar y_{st}}{\operatorname{median}_{s \in S_{2012}} \bar y_{s,2012}},
+\hat I_t = 100 \cdot \frac{\mathrm{median}_{s \in S_t} \bar y_{st}}{\mathrm{median}_{s \in S_{2012}} \bar y_{s,2012}},
 ```
 
 by the root-mean-square difference over 2012–2025 (best: 9.3 index points).
@@ -61,8 +61,8 @@ For the 8 counters observed in both 2012 and 2024, the daily total
 $`y_{sd}`$ of counter $`s`$ on day $`d`$ is modelled as
 
 ```math
-y_{sd} \sim \operatorname{Poisson}(\mu_{sd}), \qquad
-\log \mu_{sd} = \alpha_{c(s,d)} + \gamma_{t(d)} + \mathbf{x}_d^{\top} \boldsymbol{\beta},
+y_{sd} \sim \mathrm{Poisson}(\mu_{sd}), \qquad
+\log \mu_{sd} = \alpha_{c(s,d)} + \gamma_{t(d)} + \mathbf{x}_d^{\top} \beta,
 ```
 
 where $`c(s,d)`$ is the coverage period (consecutive device periods sharing a
@@ -97,7 +97,7 @@ counters is
 
 ```math
 \Delta_s = \left( \overline{\log y}_{s}^{\,\text{after}} - \overline{\log y}_{s}^{\,\text{before}} \right)
-- \operatorname{median}_{s' \neq s} \left( \overline{\log y}_{s'}^{\,\text{after}} - \overline{\log y}_{s'}^{\,\text{before}} \right),
+- \mathrm{median}_{s' \neq s} \left( \overline{\log y}_{s'}^{\,\text{after}} - \overline{\log y}_{s'}^{\,\text{before}} \right),
 ```
 
 using 120-day windows on either side of $`\tau`$; we report $`e^{\Delta_s}`$. Year-to-year
