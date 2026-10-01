@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Did Zurich's cycling double?</title>
+<title>Zurich's cycling claim, reconstructed</title>
 <meta name="description" content="Checking the City of Zurich's claim that cycling nearly doubled between 2012 and 2024 against its own open bike-counter data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +41,7 @@ section > .wrap{display:flex;flex-direction:column;gap:22px}
 .hero .shader{position:absolute;inset:0;z-index:0;opacity:.55}
 .hero .split{position:absolute;inset:0;z-index:0;background:linear-gradient(to bottom right,transparent 0 58%,var(--zh) 58% 100%);opacity:.95}
 .hero .wrap{position:relative;z-index:1;padding-block:72px 64px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:end}
-.hero h1{font-size:clamp(2.4rem,7vw,5rem);font-weight:760;line-height:1;letter-spacing:-.015em;font-variation-settings:"opsz" 96,"wdth" 92}
+.hero h1{font-size:clamp(2.2rem,5.6vw,4.2rem);font-weight:760;line-height:1;letter-spacing:-.015em;font-variation-settings:"opsz" 96,"wdth" 92}
 .hero .lede{font-size:1.12rem;color:var(--ink2);max-width:46ch;margin-top:20px}
 .verdict{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 14px;border-radius:999px;background:var(--amber-soft);color:var(--ink);font-weight:600}
 .verdict i{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:none}
@@ -111,14 +111,14 @@ number-flow{--number-flow-char-height:1em}
   <div class="wrap">
     <div>
       <span class="label">Zurich · open counter data · 2012–2024</span>
-      <h1>Did cycling in Zurich nearly double?</h1>
-      <p class="lede">The city says yes. We rebuilt its figure from the same public bike-counter data and asked how much of it holds up when you compare like with like.</p>
-      <p class="verdict"><i></i>Strong growth: yes. "Nearly doubled": plausible, not proven.</p>
+      <h1>Reconstructing Zurich's "cycling nearly doubled" claim</h1>
+      <p class="lede">The City of Zurich says cycling nearly doubled between 2012 and 2024 (<a href="https://www.stadt-zuerich.ch/de/politik-und-verwaltung/statistik-und-daten/daten/mobilitaet.html">source</a>). We try to reconstruct the claim using the public bike-counter data.</p>
+      <p class="verdict"><i></i>Verdict: plausible, but not proven.</p>
     </div>
     <div class="heronum" aria-label="Confidence that cycling at the same counters grew at least 1.8 times">
-      <span class="label">Confidence it grew ≥ ×1.8</span>
+      <span class="label">Confidence of growth ≥ ×1.8</span>
       <span class="big"><span class="nf" data-value="0.72" data-dec="2">0.72</span></span>
-      <span class="sub">Across four reasonable ways of handling the data, the confidence ranges from 0.21 to 0.72.</span>
+      <span class="sub">Four reasonable ways of handling the data give confidences from 0.21 to 0.72.</span>
       <div class="range"><span class="mono" style="font-size:.75rem">0</span><span class="bar"><span style="left:calc(0.21*100%);right:calc(100% - 0.72*100%)"></span><b style="left:calc(0.72*100% - 1px)"></b></span><span class="mono" style="font-size:.75rem">1</span></div>
     </div>
   </div>
