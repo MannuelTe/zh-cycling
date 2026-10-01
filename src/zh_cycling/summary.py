@@ -93,6 +93,9 @@ def numbers() -> dict[str, str]:
         "history.index_2021": p(hist.loc[2021, "adjusted_index"]),
         "history.index_2020": p(hist.loc[2020, "adjusted_index"]),
     })
+    # plain-number twins of every ratio, for use inside LaTeX: {{claim.S1.point_n}} -> 1.90
+    n.update({f"{k}_n": v[1:] for k, v in list(n.items()) if v.startswith("×")})
+    n["claim.n_boot"] = str(R["scenarios"]["S1"]["n"] + R["scenarios"]["S1"]["failed"])
     return n
 
 

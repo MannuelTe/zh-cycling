@@ -4,7 +4,7 @@
 
 *Manuel Trachsler · October 2026 · preprint, not peer reviewed*
 
-**Abstract.** The City of Zurich reports that cycling "nearly doubled" between 2012 and 2024, based on an index that averages all bicycle counters active in each year. We rebuild that index from the city's open counter data and re-estimate growth like-for-like on the 8 counters that operated in both years, adjusting for weather and calendar. The official figure (×1.93) is reproducible (×1.94 with a median over counters), and strong growth is not in doubt. Whether it reaches "nearly doubled" (≥ ×1.8, fixed before estimation) depends on how one device change in 2019 is treated: the pre-registered estimate is ×1.90 (95% CI ×1.63–×2.37), giving a confidence of 0.72, with a range of 0.21–0.72 across four analysis choices. A secondary analysis shows that hourly counts at an unmeasured location can be reconstructed from the other counters only to about 45% weighted absolute error.
+**Abstract.** The City of Zurich reports that cycling "nearly doubled" between 2012 and 2024, based on an index that averages all bicycle counters active in each year. We rebuild that index from the city's open counter data and re-estimate growth like-for-like on the 8 counters that operated in both years, adjusting for weather and calendar. The official figure ($`\times 1.93`$) is reproducible ($`\times 1.94`$ with a median over counters), and strong growth is not in doubt. Whether it reaches "nearly doubled" ($`r \geq 1.8`$, fixed before estimation) depends on how one device change in 2019 is treated: the pre-registered estimate is $`\hat r = 1.90`$ (95% CI 1.63–2.37), giving a confidence of $`\hat p = 0.72`$, with a range of 0.21–0.72 across four analysis choices. A secondary analysis shows that hourly counts at an unmeasured location can be reconstructed from the other counters only to about 45% weighted absolute error.
 
 
 ## 1. Introduction
@@ -23,15 +23,23 @@
   correction-factor metadata, MeteoSwiss hourly weather, calendar. See
   `DATA_SOURCES.md`.
 - Counters in the city index: 11 in 2012, 23 in 2024
-  (sites with ≥ 250 complete days).
+  (sites with at least 250 complete days).
 - Cleaning: physical site vs device period, autumn DST duplicates, partial hours,
-  zero runs (README, "Data findings").
+  zero runs (README, "Technical notes on the data").
 
 ## 3. Methods
 
 ### 3.1 Reproducing the official index
-Several plausible aggregation rules over all counters; root-mean-square
-difference from the official series 2012–2025 (best 9.3 index points).
+
+Let $`\bar y_{st}`$ be the mean daily count of counter $`s`$ in year $`t`$, and $`S_t`$ the
+set of counters active in year $`t`$. We compare several aggregation rules with the
+official index $`I_t`$, for example the median rule
+
+```math
+\hat I_t = 100 \cdot \frac{\operatorname{median}_{s \in S_t} \bar y_{st}}{\operatorname{median}_{s \in S_{2012}} \bar y_{s,2012}},
+```
+
+by the root-mean-square difference over 2012–2025 (best: 9.3 index points).
 
 | method                              |   RMSE (index points) |   2024 value |
 |:------------------------------------|----------------------:|-------------:|
@@ -48,28 +56,66 @@ difference from the official series 2012–2025 (best 9.3 index points).
 
 
 ### 3.2 Like-for-like growth
-Poisson GLM on daily totals with year effects, coverage-period fixed effects
-(device periods sharing a correction factor) and weather/calendar covariates.
-Four scenarios (Table 1). Uncertainty: two-stage cluster bootstrap over sites
-and ISO-week blocks.
 
-### 3.3 Test definition, fixed in advance
-"Nearly doubled" ⇔ true 2012→2024 ratio ≥ ×1.8. Confidence =
-share of bootstrap draws at or above the threshold under scenario S1.
+For the 8 counters observed in both 2012 and 2024, the daily total
+$`y_{sd}`$ of counter $`s`$ on day $`d`$ is modelled as
+
+```math
+y_{sd} \sim \operatorname{Poisson}(\mu_{sd}), \qquad
+\log \mu_{sd} = \alpha_{c(s,d)} + \gamma_{t(d)} + \mathbf{x}_d^{\top} \boldsymbol{\beta},
+```
+
+where $`c(s,d)`$ is the coverage period (consecutive device periods sharing a
+correction factor), $`t(d)`$ the year and $`\mathbf{x}_d`$ the weather and calendar
+covariates (temperature and its square, $`\log(1+\text{precipitation})`$, sunshine,
+weekday, public and school holidays, month). The growth ratio is
+
+```math
+r = \exp\left(\gamma_{2024} - \gamma_{2012}\right).
+```
+
+The chain-linked variant multiplies consecutive-year ratios, each fitted on the
+counters observed in both years:
+$`r^{\text{chain}} = \prod_{t=2012}^{2023} \exp\left(\hat\gamma^{(t)}_{t+1} - \hat\gamma^{(t)}_{t}\right)`$.
+Table 1 lists the four scenarios.
+
+### 3.3 Test definition and confidence, fixed in advance
+
+"Nearly doubled" is defined as $`r \geq 1.8`$. Uncertainty comes from a
+two-stage cluster bootstrap: resample counters with replacement, then ISO-week
+blocks, and refit. With $`B = 1000`$ draws $`r^{\ast}_1, \dots, r^{\ast}_B`$ under
+the pre-registered scenario S1, the reported confidence is
+
+```math
+\hat p = \frac{1}{B} \sum_{b=1}^{B} \mathbf{1}\left[ r^{\ast}_b \geq 1.8 \right].
+```
 
 ### 3.4 Anomaly inventory
-Device-swap step test against the median of other counters; year-to-year level
-jumps relative to the median counter; grouped by cause (A measurement breaks,
-B temporary disruptions, C city-wide events, D real local change, E counter mix).
+
+For a device swap at counter $`s`$ on date $`\tau`$, the step relative to the other
+counters is
+
+```math
+\Delta_s = \left( \overline{\log y}_{s}^{\,\text{after}} - \overline{\log y}_{s}^{\,\text{before}} \right)
+- \operatorname{median}_{s' \neq s} \left( \overline{\log y}_{s'}^{\,\text{after}} - \overline{\log y}_{s'}^{\,\text{before}} \right),
+```
+
+using 120-day windows on either side of $`\tau`$; we report $`e^{\Delta_s}`$. Year-to-year
+jumps of a counter's level relative to the median counter beyond a factor of 1.25
+are flagged. Anomalies are grouped by cause: A measurement breaks, B temporary
+disruptions, C city-wide events, D real local change, E counter mix.
 
 ## 4. Results
 
 ### 4.1 The official figure is reproducible
+
 ![Official index and four reconstructions.](figures/fig1_index.png)
 
 ### 4.2 Like-for-like growth and confidence
-The same 8 counters grew ×1.79 unadjusted and
-×1.90 adjusted. Strong growth is robust (P(≥ ×1.5) = 1.00).
+
+The same 8 counters grew $`\times 1.79`$ unadjusted and
+$`\hat r = 1.90`$ adjusted. Strong growth is robust:
+$`P(r \geq 1.5) = 1.00`$, while $`\hat p = P(r \geq 1.8) = 0.72`$.
 
 | scenario   | description                                                         |   point |   CI 2.5% |   CI 97.5% |   P(≥×1.5) |   P(≥×1.8) |   P(≥×1.934) |   draws |
 |:-----------|:--------------------------------------------------------------------|--------:|----------:|-----------:|-----------:|-----------:|-------------:|--------:|
@@ -82,9 +128,10 @@ The same 8 counters grew ×1.79 unadjusted and
 ![Bootstrap distributions by scenario.](figures/fig2_bootstrap.png)
 
 ### 4.3 One counter carries the margin
-Leaving one counter out gives ×1.79–×2.05; without
-Andreasstrasse ×1.79. Treating its October 2019 device swap as a
-break gives ×1.79.
+
+Leaving one counter out gives $`\hat r \in [1.79, 2.05]`$;
+without Andreasstrasse $`\hat r = 1.79`$. Treating its October 2019
+device swap as a break gives $`\hat r = 1.79`$.
 
 ![Andreasstrasse relative to the median counter.](figures/fig3_andreasstrasse.png)
 
@@ -103,20 +150,34 @@ break gives ×1.79.
 
 
 ### 4.4 Composition and the fragility of the median
-A plain average over all counters would show ×2.14 = ×1.75
-(stayers) × ×1.22 (counter mix). The city's median is far less
-exposed, but with 11 counters in 2012, dropping any one moves it
-between ×1.53 and ×2.16.
+
+For a plain average over all counters, the growth ratio splits exactly into
+like-for-like growth and a counter-mix term ("stay" = counters active in both years):
+
+```math
+\frac{\bar y^{\,\text{all}}_{2024}}{\bar y^{\,\text{all}}_{2012}}
+= \underbrace{\frac{\bar y^{\,\text{stay}}_{2024}}{\bar y^{\,\text{stay}}_{2012}}}_{\text{same counters}}
+\times \underbrace{\frac{\bar y^{\,\text{all}}_{2024} / \bar y^{\,\text{stay}}_{2024}}{\bar y^{\,\text{all}}_{2012} / \bar y^{\,\text{stay}}_{2012}}}_{\text{counter mix}},
+\qquad 2.14 = 1.75 \times 1.22.
+```
+
+The city's median is far less exposed to composition, but with 11
+counters in 2012, dropping any one moves it between $`\times 1.53`$
+and $`\times 2.16`$.
 
 ## 5. Secondary analysis: reconstructing counts at unmeasured locations
 
-Held-out-site backtest, test year 2025. Best model: a validation-weighted blend
-of gradient boosting and network-distance IDW, with 29 cantonal stations as extra
+Held-out-site backtest, test year 2025. Errors are reported as
+$`\text{MAE} = \frac{1}{n}\sum_i |y_i - \hat y_i|`$ and
+$`\text{WAPE} = \sum_i |y_i - \hat y_i| \,/\, \sum_i y_i`$ over held-out site-hours.
+The best model is a validation-weighted blend of gradient boosting and
+network-distance IDW, $`\hat y = w\,\hat y^{\text{GBT}} + (1-w)\,\hat y^{\text{IDW}}`$ with
+$`w`$ chosen per fold on validation sites, using 29 cantonal stations as extra
 inputs: pooled hourly MAE 31.1 passages/h (city-only 33.2),
 daily-total WAPE 42%, 90% interval coverage 84%.
-An inductive GNN was 5.6–7.2 passages/h worse
-than gradient boosting and was not selected. Routing along the planned Velonetz
-did not help the blend (31.1).
+An inductive GNN was 5.6–7.2 passages/h worse than
+gradient boosting and was not selected. Routing along the planned Velonetz did not
+help the blend (MAE 31.1).
 
 | model                                    |   pooled MAE |   macro MAE |   WAPE |   bias |   90% coverage |
 |:-----------------------------------------|-------------:|------------:|-------:|-------:|---------------:|

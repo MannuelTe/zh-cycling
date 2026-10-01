@@ -194,6 +194,11 @@ def assemble_paper() -> None:
         gh += [f"*{' · '.join(x.group(1) for x in (author, date) if x)}*", ""]
     if abstract:
         gh += ["**Abstract.** " + " ".join(line.strip() for line in abstract.group(1).splitlines()), ""]
+    # GitHub's parser can read _ and * inside $...$ as emphasis; use its robust math syntax
+    body = re.sub(r"\$\$\s*\n(.*?)\n\s*\$\$", lambda m: "```math\n" + m.group(1).strip() + "\n```", body, flags=re.S)
+    inline = lambda s: re.sub(r"(?<![$`])\$(?![$`])([^$\n]+?)\$(?![$`])", r"$`\1`$", s)
+    body = inline(body)
+    gh = [inline(line) for line in gh]
     body = re.sub(r"^# ", "## ", body, flags=re.M)
     body = re.sub(r"^## (\d+\.\d+ )", r"### \1", body, flags=re.M)
     (C.ROOT / "paper" / "paper.md").write_text("\n".join(gh) + body)
