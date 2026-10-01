@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the preprint PDF/HTML from paper/paper.md.
+# Build the preprint PDF/HTML from paper/paper.src.md.
 # Needs pandoc (https://pandoc.org) and, for PDF, a LaTeX engine (e.g. tectonic).
 set -euo pipefail
 cd "$(dirname "$0")/.."

@@ -1,6 +1,6 @@
 # Licence for the manuscript
 
-The manuscript (`paper/paper.md`), its figures (`paper/figures/`) and tables
+The manuscript (`paper/paper.src.md`, rendered as `paper/paper.md`), its figures (`paper/figures/`) and tables
 (`paper/tables/`), and the text of the summary page (`site/`, `docs/index.html`)
 are licensed under the Creative Commons Attribution 4.0 International licence
 (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/

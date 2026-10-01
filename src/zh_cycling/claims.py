@@ -432,7 +432,7 @@ def run(n_boot: int = N_BOOT) -> dict:
     scen = {
         "S1": ("Same counters, raw counts, coverage-period effects (pre-registered)", fixed_panel(d, sites, False),
                lambda n: bootstrap_fixed(d, sites, False, n)),
-        "S2": ("Same counters, counts x city correction factors", fixed_panel(d, sites, True),
+        "S2": ("Same counters, counts × city correction factors", fixed_panel(d, sites, True),
                lambda n: bootstrap_fixed(d, sites, True, n, cfg.SEED + 1)),
         "S3": ("Same counters, two 2019 device swaps as breaks", fixed_panel(db, sites, False),
                lambda n: bootstrap_fixed(db, sites, False, n, cfg.SEED + 3)),

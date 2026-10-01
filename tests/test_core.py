@@ -93,7 +93,7 @@ def test_templates_only_use_known_keys():
     from zh_cycling import summary
 
     keys = set()
-    for f in (config.ROOT / "paper" / "paper.md", config.ROOT / "site" / "index.html"):
+    for f in (config.ROOT / "paper" / "paper.src.md", config.ROOT / "site" / "index.html"):
         keys |= set(re.findall(r"\{\{\s*([\w.]+)\s*\}\}", f.read_text()))
     known_prefixes = ("claim.", "model.", "history.", "svg.")
     assert all(k.startswith(known_prefixes) for k in keys), sorted(keys)

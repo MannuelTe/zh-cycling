@@ -49,7 +49,7 @@ Individual steps (`uv run zh-cycling --help`):
 | `backtest --tag …` | held-out-site backtest, metrics, report in `outputs*/backtest/<tag>/` | 15 min – 1 h |
 | `history` | weather-adjusted index on stable counters | ~1 min |
 | `claims` | claim-2 reconstruction, scenarios, bootstrap, anomaly inventory in `outputs/claims/c2_doubling/` | ~15 min |
-| `figures` | `paper/figures/`, `paper/tables/`, `paper/build/paper.md` | <1 min |
+| `figures` | `paper/figures/`, `paper/tables/`, `paper/paper.md` (filled from `paper.src.md`) | <1 min |
 | `dashboard` | `docs/dashboard/index.html` | ~1 min |
 | `site` | `docs/index.html` | seconds |
 
@@ -64,7 +64,7 @@ src/zh_cycling/     pipeline (download, clean, graph, panel, baselines, gnn, bac
                     evaluate, history, claims, figures, dashboard, site, summary)
 outputs/            committed results: metrics, reports, claim analysis (city variant)
 outputs_canton6/    committed results with cantonal inputs
-paper/              manuscript (Markdown + pandoc), generated figures and tables
+paper/              manuscript: paper.src.md (edit) -> paper.md (generated), figures, tables
 site/               summary-page template; numbers are filled from the outputs
 dashboard/          dashboard template
 docs/               GitHub Pages: summary page and dashboard (generated)

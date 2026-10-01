@@ -77,7 +77,7 @@
       "p_ge_1.934": 0.427
     },
     "S2": {
-      "label": "Same counters, counts x city correction factors",
+      "label": "Same counters, counts × city correction factors",
       "point": 1.826986288006741,
       "n": 500,
       "failed": 0,
