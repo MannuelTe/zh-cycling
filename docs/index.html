@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Did Zurich's cycling double?</title>
+<meta name="description" content="Checking the City of Zurich's claim that cycling nearly doubled between 2012 and 2024 against its own open bike-counter data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Martian+Mono:wdth,wght@75..112.5,400..600&display=swap">
+<style>
+/* Layout: one reading column; the hero carries Zurich's diagonal blue/white split; numbers set in a wide mono like counter displays. */
+:root{
+  --paper:#f5f6f2; --card:#ffffff; --ink:#0d1330; --ink2:#3d4566; --muted:#6b7290; --rule:#dcdfe8;
+  --zh:#1f3fbf; --zh-soft:#e3e8fb; --amber:#c98a00; --amber-soft:#fbf0d4; --red:#c8302f; --green:#1d7a4a;
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Martian Mono",ui-monospace,Menlo,monospace;
+  --measure:64ch;
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#0b0e1c; --card:#131833; --ink:#eef0fa; --ink2:#b9bfdc; --muted:#8d93b3; --rule:#262c4d;
+  --zh:#6f8cff; --zh-soft:#1b2452; --amber:#f0b429; --amber-soft:#3a2d0c; --red:#ff7a75; --green:#4fd18b; color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--f-display);font-variation-settings:"opsz" 14}
+a{color:var(--zh);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--zh);outline-offset:3px;border-radius:3px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.label{font:500 .7rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+.col{max-width:var(--measure)}
+h1,h2,h3{margin:0;text-wrap:balance;font-variation-settings:"opsz" 96}
+h2{font-size:clamp(1.5rem,3.4vw,2.15rem);font-weight:700;line-height:1.1;letter-spacing:-.015em}
+h3{font-size:1.1rem;font-weight:650}
+p{margin:0}
+section{padding-block:56px;border-top:1px solid var(--rule)}
+section > .wrap{display:flex;flex-direction:column;gap:22px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-top:0;padding-block:0;background:var(--paper)}
+.hero .shader{position:absolute;inset:0;z-index:0;opacity:.55}
+.hero .split{position:absolute;inset:0;z-index:0;background:linear-gradient(to bottom right,transparent 0 58%,var(--zh) 58% 100%);opacity:.95}
+.hero .wrap{position:relative;z-index:1;padding-block:72px 64px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:end}
+.hero h1{font-size:clamp(2.4rem,7vw,5rem);font-weight:760;line-height:1;letter-spacing:-.015em;font-variation-settings:"opsz" 96,"wdth" 92}
+.hero .lede{font-size:1.12rem;color:var(--ink2);max-width:46ch;margin-top:20px}
+.verdict{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 14px;border-radius:999px;background:var(--amber-soft);color:var(--ink);font-weight:600}
+.verdict i{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:none}
+.heronum{background:var(--card);color:var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:6px;box-shadow:0 18px 50px rgb(5 10 40 / .22)}
+.heronum .big{font:500 clamp(3.2rem,9vw,5.4rem)/1 var(--f-mono);font-variation-settings:"wdth" 112.5;letter-spacing:-.04em;color:var(--zh)}
+.heronum .sub{font-size:.92rem;color:var(--ink2)}
+.heronum .range{display:flex;align-items:center;gap:10px;margin-top:8px}
+.bar{position:relative;flex:1;height:8px;border-radius:4px;background:var(--rule)}
+.bar span{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--zh)}
+.bar b{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:var(--ink)}
+
+/* claim */
+blockquote{margin:0;font-size:clamp(1.35rem,3vw,1.9rem);font-weight:600;line-height:1.25;font-variation-settings:"opsz" 60;max-width:30ch}
+.cite{color:var(--muted);font-size:.92rem}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:2px solid var(--ink)}
+.steps li::before{content:counter(s,decimal-leading-zero);font:500 .78rem var(--f-mono);color:var(--zh)}
+.steps p{color:var(--ink2);font-size:.98rem}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.num{background:var(--card);padding:20px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.num .v{font:500 2.1rem/1 var(--f-mono);font-variation-settings:"wdth" 100;letter-spacing:-.03em}
+.num.key .v{color:var(--zh)}
+.num.warn .v{color:var(--amber)}
+.num p{font-size:.9rem;color:var(--ink2)}
+section > .wrap.callout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:center}
+.callout p{font-size:.98rem;color:var(--ink2)}
+.chart{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font:500 10px var(--f-mono);fill:var(--muted)}
+.ruled{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 32px;margin:0;padding:0;list-style:none}
+.ruled li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding-block:12px;border-bottom:1px solid var(--rule)}
+.chip{font:500 .7rem var(--f-mono);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.chip.no{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
+.chip.yes{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+.chip.info{background:var(--zh-soft);color:var(--zh)}
+.ruled p{color:var(--ink2);font-size:.95rem}
+.ruled b{color:var(--ink)}
+.ask{background:var(--zh);color:#fff;border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.ask .label{color:rgb(255 255 255 / .75)}
+.ask p{max-width:62ch;color:rgb(255 255 255 / .92)}
+.links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.links a{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--rule);border-radius:10px;background:var(--card);text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.links a:hover{border-color:var(--zh);transform:translateY(-2px)}
+.links span{color:var(--ink2);font-size:.88rem}
+footer{padding-block:36px 56px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--rule)}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+number-flow{--number-flow-char-height:1em}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr);padding-block:48px 40px}
+  .hero .split{background:linear-gradient(to bottom right,transparent 0 70%,var(--zh) 70% 100%)}
+  .steps,.ruled,.callout{grid-template-columns:minmax(0,1fr)}
+  .nums,.links{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:440px){.nums,.links{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.links a{transition:none}.links a:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="shader" id="shader" aria-hidden="true"></div>
+  <div class="split" aria-hidden="true"></div>
+  <div class="wrap">
+    <div>
+      <span class="label">Zurich · open counter data · 2012–2024</span>
+      <h1>Did cycling in Zurich nearly double?</h1>
+      <p class="lede">The city says yes. We rebuilt its figure from the same public bike-counter data and asked how much of it holds up when you compare like with like.</p>
+      <p class="verdict"><i></i>Strong growth: yes. "Nearly doubled": plausible, not proven.</p>
+    </div>
+    <div class="heronum" aria-label="Confidence that cycling at the same counters grew at least 1.8 times">
+      <span class="label">Confidence it grew ≥ ×1.8</span>
+      <span class="big"><span class="nf" data-value="0.72" data-dec="2">0.72</span></span>
+      <span class="sub">Across four reasonable ways of handling the data, the confidence ranges from 0.21 to 0.72.</span>
+      <div class="range"><span class="mono" style="font-size:.75rem">0</span><span class="bar"><span style="left:calc(0.21*100%);right:calc(100% - 0.72*100%)"></span><b style="left:calc(0.72*100% - 1px)"></b></span><span class="mono" style="font-size:.75rem">1</span></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <span class="label">The claim</span>
+    <blockquote>«In der Stadt Zürich hat sich der Veloverkehr von 2012 bis 2024 beinahe verdoppelt.»</blockquote>
+    <p class="cite col">"Cycling in the City of Zurich nearly doubled from 2012 to 2024." Based on the city's official traffic index, which puts 2024 at 193.4 against 100 in 2012 (Statistik Stadt Zürich; reported by Pro Velo, November 2025).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="label">What we did</span>
+    <h2>Three checks, decided before looking at the answer</h2>
+    <ol class="steps">
+      <li><h3>Rebuild the official number</h3><p>The city averages all counters that existed in a given year. Using the open data, a median over counters gives ×1.94, almost exactly the official ×1.93.</p></li>
+      <li><h3>Compare like with like</h3><p>Counters were added, removed and replaced over the years. So we kept only the 8 counters that ran in both 2012 and 2024, and adjusted for weather and holidays.</p></li>
+      <li><h3>Put a number on doubt</h3><p>We set "nearly doubled" at ×1.8 or more in advance, then resampled counters and weeks a thousand times to see how often the growth clears that bar.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="label">The answer in four numbers</span>
+    <div class="nums">
+      <div class="num"><span class="label">Official index</span><span class="v"><span class="nf" data-value="×1.93" data-dec="2" data-prefix="×">×1.93</span></span><p>2012 → 2024, all counters active each year.</p></div>
+      <div class="num key"><span class="label">Same counters</span><span class="v"><span class="nf" data-value="×1.90" data-dec="2" data-prefix="×">×1.90</span></span><p>The 8 long-running counters, adjusted for weather. 95% range ×1.63 to ×2.37.</p></div>
+      <div class="num warn"><span class="label">If one swap was a glitch</span><span class="v"><span class="nf" data-value="×1.73" data-dec="2" data-prefix="×">×1.73</span></span><p>Treating two 2019 device swaps as measurement changes, not real growth.</p></div>
+      <div class="num"><span class="label">Clearly more cycling</span><span class="v"><span class="nf" data-value="1.00" data-dec="2">1.00</span></span><p>Confidence that growth was at least ×1.5. Nobody should doubt the trend.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap callout">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <span class="label">Why the doubt</span>
+      <h2>One counter in Oerlikon carries the margin</h2>
+      <p class="col">Andreasstrasse grew faster than any other long-running counter. Its level relative to the median counter stepped up by about half when a new type of device was installed in October 2019, after a seven-month outage. Nothing else in its data changed: the split by direction and the daily rhythm look the same.</p>
+      <p class="col">Count that step as real and the estimate is ×1.90. Count it as a change in measurement and it falls to ×1.79, just under the bar. Leave Andreasstrasse out entirely and it is ×1.79. The public data cannot tell which is right.</p>
+    </div>
+    <figure class="chart" style="margin:0">
+      <svg viewBox="0 0 560 230" role="img" aria-label="Andreasstrasse traffic relative to the median counter, 2011 to 2025"><line x1="34" x2="550" y1="163.5" y2="163.5" stroke="var(--rule)"/><text x="28" y="166.5" text-anchor="end">0.25</text><line x1="34" x2="550" y1="118.9" y2="118.9" stroke="var(--rule)"/><text x="28" y="121.9" text-anchor="end">0.50</text><line x1="34" x2="550" y1="74.4" y2="74.4" stroke="var(--rule)"/><text x="28" y="77.4" text-anchor="end">0.75</text><line x1="34" x2="550" y1="29.8" y2="29.8" stroke="var(--rule)"/><text x="28" y="32.8" text-anchor="end">1.00</text><text x="68.4" y="224" text-anchor="middle">2012</text><text x="171.6" y="224" text-anchor="middle">2015</text><text x="274.8" y="224" text-anchor="middle">2018</text><text x="378.0" y="224" text-anchor="middle">2021</text><text x="481.2" y="224" text-anchor="middle">2024</text><line x1="316.0" x2="316.0" y1="12" y2="208" stroke="var(--ink2)" stroke-dasharray="3 3"/><line x1="335.9" x2="335.9" y1="12" y2="208" stroke="var(--ink2)" stroke-dasharray="3 3"/><path d="M34.0,159.2L42.6,150.4L51.2,161.1L59.8,163.0L68.4,162.7L77.0,160.0L85.6,156.8L94.2,157.9L102.8,158.2L111.4,163.5L120.0,165.4L128.6,162.2L137.2,153.8L145.8,146.7L154.4,147.3L163.0,153.3L171.6,144.9L180.2,118.1L188.8,125.0L197.4,114.5L206.0,108.6L214.6,117.5L223.2,128.0L231.8,128.9L240.4,139.0L249.0,116.7L257.6,124.6L266.2,119.5L274.8,115.3L283.4,112.8L292.0,119.9L300.6,115.4L309.2,144.0M335.0,82.7L343.6,52.6L352.2,31.9L360.8,84.7L369.4,61.0L378.0,59.4L386.6,76.8L395.2,92.3L403.8,82.4L412.4,89.2L421.0,82.1L429.6,92.0L438.2,81.4L446.8,85.6L455.4,83.4L464.0,97.6L472.6,98.1L481.2,87.3L489.8,88.2L498.4,92.3L507.0,89.3L515.6,71.8L524.2,68.8L532.8,109.1" fill="none" stroke="var(--zh)" stroke-width="2.2" stroke-linejoin="round"/><line x1="240.4" x2="316.1" y1="123.7" y2="123.7" stroke="var(--ink)" stroke-width="1.6"/><line x1="343.6" x2="412.4" y1="68.9" y2="68.9" stroke="var(--ink)" stroke-width="1.6"/><text x="418.4" y="72.9" style="fill:var(--ink)">×1.65 step</text></svg>
+      <figcaption class="label" style="margin-top:8px">Andreasstrasse ÷ median counter, quarterly · dashed: device swaps</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="label">What we ruled out</span>
+    <h2>Other quirks in the data, and whether they matter</h2>
+    <ul class="ruled">
+      <li><span class="chip no">no effect</span><p><b>Roadworks and outages.</b> Several counters dip for a year and recover. Dropping those years moves the estimate by about 1%.</p></li>
+      <li><span class="chip no">no effect</span><p><b>COVID.</b> Cycling surged in 2020 and fell back in 2021. Leaving both years out changes little, and 2012 and 2024 are unaffected.</p></li>
+      <li><span class="chip info">matters for averages</span><p><b>Changing counters.</b> Quiet counters were removed, busy ones added. A plain average would show ×2.14 instead of ×1.75. The city's median avoids most of that.</p></li>
+      <li><span class="chip info">limits precision</span><p><b>Few counters in 2012.</b> With only 11 counters, the median rests on one of them. Dropping any one moves it between ×1.53 and ×2.16.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="ask">
+      <span class="label">One question for the Tiefbauamt</span>
+      <h2>Did the 2019 device change at Andreasstrasse alter what is counted?</h2>
+      <p>If yes, the honest summary is "up about three-quarters" (confidence about 0.24 for "nearly doubled"). If no, "nearly doubled" holds up (about 0.72). The city can answer this from its maintenance records.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="label">A second question</span>
+    <h2>Can you estimate cycling where there is no counter?</h2>
+    <p class="col">Only roughly. We hid each counter in turn and rebuilt its 2025 traffic from the others, the weather and the street network. The best method is off by about 45% hour by hour and 42% on daily totals, and it runs about 15% low. A graph neural network did not beat simpler methods. Adding 29 cantonal counters around the city helped a little; steering routes along the planned Velonetz did not.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="label">Go deeper</span>
+    <div class="links">
+      <a href="dashboard/"><b>Interactive dashboard</b><span>Every chart, the map, the model comparison.</span></a>
+      <a href="https://github.com/MannuelTe/zh-cycling/blob/main/paper/paper.md"><b>Preprint</b><span>Methods, tables and limitations.</span></a>
+      <a href="https://github.com/MannuelTe/zh-cycling"><b>Code</b><span>One script reproduces every number on this page.</span></a>
+      <a href="https://github.com/MannuelTe/zh-cycling/blob/main/DATA_SOURCES.md"><b>Data sources</b><span>All open data, with licences.</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Counters measure bikes passing a point, not trips or people. Growth at counters is not the same as growth everywhere in the city. Nothing here says why cycling changed.</p>
+    <p>Text and figures CC BY 4.0, code MIT. Data: Stadt Zürich (CC0), MeteoSwiss, Kanton Zürich, © OpenStreetMap contributors (ODbL).</p>
+  </div>
+</footer>
+
+<script type="module">
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// animated figures (NumberFlow); the plain text stays if the module fails to load
+try {
+  await import("https://esm.sh/number-flow@0.6.2");
+  const els = [...document.querySelectorAll(".nf")];
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target);
+    const span = e.target, v = parseFloat(span.dataset.value.replace(/[^0-9.]/g, ""));
+    const dec = +span.dataset.dec || 0, prefix = span.dataset.prefix || "";
+    const nf = document.createElement("number-flow");
+    nf.format = { minimumFractionDigits: dec, maximumFractionDigits: dec };
+    nf.numberPrefix = prefix;
+    nf.update(prefix ? 1 : 0);
+    span.replaceChildren(nf);
+    requestAnimationFrame(() => nf.update(v));
+  }), { threshold: 0.6 });
+  els.forEach(el => { el.textContent = (el.dataset.prefix || "") + el.textContent.replace(/^×/, ""); io.observe(el); });
+} catch (err) { /* keep static numbers */ }
+
+// hero texture: Paper Shaders "waves", static lines like lane markings
+try {
+  const P = await import("https://esm.sh/@paper-design/shaders@0.0.81");
+  const host = document.getElementById("shader");
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const s = P.defaultPatternSizing;
+  new P.ShaderMount(host, P.wavesFragmentShader, {
+    u_colorFront: P.getShaderColorFromString(css("--zh-soft")),
+    u_colorBack: P.getShaderColorFromString(css("--paper")),
+    u_shape: 1, u_frequency: 0.35, u_amplitude: 0.5, u_spacing: 1.2, u_proportion: 0.12, u_softness: 0,
+    u_fit: P.ShaderFitOptions[s.fit], u_scale: 1.6, u_rotation: 38, u_originX: s.originX, u_originY: s.originY,
+    u_offsetX: s.offsetX, u_offsetY: s.offsetY, u_worldWidth: s.worldWidth, u_worldHeight: s.worldHeight,
+  }, undefined, 0);
+} catch (err) { /* plain background */ }
+</script>
+</body>
+</html>

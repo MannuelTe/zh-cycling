@@ -1,0 +1,9 @@
+{
+  "device_hours": 3715865,
+  "observed_share": 0.9947,
+  "partial_hours": 12418,
+  "dst_ambiguous_hours": 426,
+  "zero_run_hours": 7059,
+  "outside_metadata_validity_hours": 0,
+  "weather_gap_hours": 271
+}

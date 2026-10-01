@@ -1,0 +1,52 @@
+[project]
+name = "zh-cycling"
+version = "0.1.0"
+description = "Checking Zurich's published cycling claims against the open bike-counter data, and reconstructing counts at unmeasured locations"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Manuel Trachsler", email = "96198120+MannuelTe@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.5.6",
+    "geopandas>=1.2.0",
+    "holidays>=0.105",
+    "matplotlib>=3.11.2",
+    "networkx>=3.7",
+    "openpyxl>=3.1.5",
+    "osmnx>=2.1.1",
+    "pandas>=2.2",
+    "pyarrow>=25.0.1",
+    "pyogrio>=0.13.0",
+    "pyproj>=3.8.0",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
+    "shapely>=2.1.2",
+    "statsmodels>=0.15.0",
+    "tabulate>=0.10.0",
+    "torch>=2.14.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+zh-cycling = "zh_cycling:main"
+
+[build-system]
+requires = ["uv_build>=0.11.14,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 160
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E731", "B023", "B905"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

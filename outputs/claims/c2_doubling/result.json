@@ -1,0 +1,127 @@
+{
+  "claim": "Veloverkehr in der Stadt Zürich hat sich 2012-2024 beinahe verdoppelt (official index 2024 = 193.4)",
+  "test": "true growth ratio 2012->2024 >= 1.8 (fixed before estimation)",
+  "official_ratio": 1.9340000000000002,
+  "reproduction_rmse_index_points": {
+    "pooled_site_days_raw": 38.25549377190443,
+    "pooled_site_days_corrected": 31.232636188585612,
+    "mean_of_site_means_raw": 38.95300890821148,
+    "median_of_site_means_raw": 9.26690812415599,
+    "mean_of_site_means_corrected": 31.190596237275635,
+    "median_of_site_means_corrected": 13.212088248943358,
+    "mean_of_site_means_raw_250d": 34.425396859404806,
+    "median_of_site_means_raw_250d": 14.727804386249858,
+    "mean_of_site_means_corrected_250d": 28.41841632759662,
+    "median_of_site_means_corrected_250d": 9.91237252205613
+  },
+  "best_reproduction": "median_of_site_means_raw",
+  "city_style_median_ratio": 1.9403519827445446,
+  "fixed_panel_sites": [
+    "VZS_ANDR",
+    "VZS_BINZ",
+    "VZS_HOFW",
+    "VZS_LUXG",
+    "VZS_MUEH",
+    "VZS_MYTH",
+    "VZS_SCHE",
+    "VZS_SIHL"
+  ],
+  "fixed_panel_unadjusted_ratio": 1.7876599358589862,
+  "fixed_panel_leave_one_out": {
+    "VZS_ANDR": 1.785912501384159,
+    "VZS_BINZ": 1.9219191406889602,
+    "VZS_HOFW": 1.8351054302306207,
+    "VZS_LUXG": 1.9688166153145545,
+    "VZS_MUEH": 1.90287892688155,
+    "VZS_MYTH": 1.8692122263133937,
+    "VZS_SCHE": 2.0465122348993727,
+    "VZS_SIHL": 1.879206247555092
+  },
+  "flagged_breaks": {
+    "VZS_HOFW": [
+      "2019-03-14"
+    ],
+    "VZS_ANDR": [
+      "2019-10-11"
+    ]
+  },
+  "composition": {
+    "all": 2.13559096584231,
+    "stayers": 1.7525323179883123,
+    "mix": 1.2185743703110141,
+    "leavers": [
+      "VZS_BERT",
+      "VZS_FISC",
+      "VZS_KLOW"
+    ],
+    "leavers_mean_base": 488.78875649602924,
+    "stayers_mean_base": 835.0756984631143,
+    "entrants_mean_target": 1644.7275107720561,
+    "stayers_mean_target": 1463.4971495232708,
+    "n_base": 11,
+    "n_target": 23
+  },
+  "scenarios": {
+    "S1": {
+      "label": "Same counters, raw counts, coverage-period effects (pre-registered)",
+      "point": 1.8964345601001813,
+      "n": 1000,
+      "failed": 0,
+      "median": 1.8965486561184135,
+      "ci95": [
+        1.6310010969842952,
+        2.36670969067758
+      ],
+      "p_ge_1.500": 1.0,
+      "p_ge_1.800": 0.716,
+      "p_ge_1.934": 0.427
+    },
+    "S2": {
+      "label": "Same counters, counts x city correction factors",
+      "point": 1.826986288006741,
+      "n": 500,
+      "failed": 0,
+      "median": 1.8212505544791076,
+      "ci95": [
+        1.5368238128709586,
+        2.2149425320279885
+      ],
+      "p_ge_1.500": 0.988,
+      "p_ge_1.800": 0.556,
+      "p_ge_1.934": 0.258
+    },
+    "S3": {
+      "label": "Same counters, two 2019 device swaps as breaks",
+      "point": 1.7326187313371348,
+      "n": 500,
+      "failed": 0,
+      "median": 1.7405728934644835,
+      "ci95": [
+        1.5820894624354283,
+        1.9633374231059515
+      ],
+      "p_ge_1.500": 1.0,
+      "p_ge_1.800": 0.236,
+      "p_ge_1.934": 0.04
+    },
+    "S4": {
+      "label": "Chain-linked over all counters, outage years skipped",
+      "point": 1.5211723095541918,
+      "n": 452,
+      "failed": 48,
+      "median": 1.606291283789701,
+      "ci95": [
+        1.280307000234918,
+        2.1228375681856515
+      ],
+      "p_ge_1.500": 0.7079646017699115,
+      "p_ge_1.800": 0.20575221238938052,
+      "p_ge_1.934": 0.09513274336283185
+    }
+  },
+  "confidence": 0.716,
+  "confidence_range_across_scenarios": [
+    0.20575221238938052,
+    0.716
+  ]
+}

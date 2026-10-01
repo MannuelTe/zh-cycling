@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite it as below."
+title: "Checking Zurich's cycling claims against its own counters"
+authors:
+  - family-names: Trachsler
+    given-names: Manuel
+version: 0.1.0
+date-released: 2026-10-01
+license: MIT
+repository-code: "https://github.com/MannuelTe/zh-cycling"
+keywords:
+  - cycling
+  - traffic counts
+  - Zurich
+  - open data
+  - reproducibility

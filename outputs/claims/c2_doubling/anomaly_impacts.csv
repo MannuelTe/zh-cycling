@@ -1,0 +1,11 @@
+group,anomaly,sites,mechanism,fixed_panel_ratio,city_median_if_excluded,fixed_panel_change_pct,changes_nearly_doubled
+A,Andreasstrasse device swap Oct 2019 as a break,VZS_ANDR,new device model after a 7-month outage; level about x1.5 vs median counter,1.7949071675038721,1.7022333420381783,-5.353593249795329,yes
+A,Hofwiesenstrasse device swap Mar 2019 as a break,VZS_HOFW,level x1.31 vs other counters at the swap,1.847784909131635,1.7022333420381783,-2.565321893626338,no
+A,Both 2019 swaps as breaks (scenario S3),"VZS_ANDR, VZS_HOFW",,1.7326187313371348,,-8.63809551933038,yes
+A,Correction-factor changes not split into periods,"VZS_MUEH 2023, VZS_MYTH 2022, VZS_SIHL 2022",handling choice,1.8634215911447503,,-1.7407913592171087,no
+A,Device or factor steps at counters added later,"VZS_SCHU, VZS_LIMC, VZS_BUCH, VZS_TOED, VZS_HARN",not in the fixed panel,,2.153710692501733,,city-style figure only
+B,Roadworks and outage years dropped,"VZS_SIHL 2020, VZS_SIHL 2021, VZS_MYTH 2022, VZS_SCHE 2019, VZS_BINZ 2022",dips that revert,1.8778150742693396,,-0.9818153614463809,no
+C,COVID years 2020-21 dropped,all,surge then partial reversal,1.9447061584763543,,2.545386979955855,no
+D,Gradual ramps treated as breaks (wrong in principle),"VZS_ANDR 2014-16, VZS_MUEH 2014-15",growth concentrated at few counters,1.7201329468412427,,-9.29647755679085,yes
+D,Documented route effects excluded,"VZS_BASL, VZS_LANN, VZS_LANS, VZS_LAFN, VZS_LAFS",priority route 2023; shift to roadway 2022,,2.1631198379429986,,city-style figure only
+D,Unexplained persistent step without device change excluded,VZS_TALS,x2.4 in 2022,,1.930942837303279,,city-style figure only
