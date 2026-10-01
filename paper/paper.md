@@ -197,14 +197,15 @@ help the blend (MAE 31.1).
 
 ## 6. Discussion
 
-- The city's number is defensible as a headline, but its precision is lower than
-  one decimal suggests, and the like-for-like evidence supports "up about
-  three-quarters to nine-tenths" more firmly than "nearly doubled".
-- One question to the Tiefbauamt would resolve most of the range: whether the
-  Andreasstrasse device change in October 2019 altered what is counted.
-- Limitations: few long-running counters; correction factors taken as published;
-  counters measure passages at a cross-section, not trips or people; static
-  current network for the secondary analysis.
+- The city's number is defensible, but its precision is lower than its one decimal
+  place suggests, and the evidence points closer to "up about three-quarters to
+  nine-tenths" than to "nearly doubled".
+- Asking the Tiefbauamt for the details of the device change at Andreasstrasse in
+  October 2019 would resolve most of the range.
+- The following limitations apply: only few long-running counters exist; the
+  correction factors were taken as published; device changes cannot be verified
+  from the open data alone; counters measure passages at a cross-section, not trips
+  or people; and the secondary analysis uses today's street network for all years.
 
 ![Weather-adjusted index on seven stable counters, 2017 = 1.](figures/fig5_history.png)
 
