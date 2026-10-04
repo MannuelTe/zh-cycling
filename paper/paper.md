@@ -25,7 +25,7 @@
 - Counters in the city index: 11 in 2012, 23 in 2024
   (sites with at least 250 complete days).
 - Cleaning: physical site vs device period, autumn DST duplicates, partial hours,
-  zero runs (README, "Technical notes on the data").
+  zero runs (`DATA_SOURCES.md`, "Technical notes on the data").
 
 ## 3. Methods
 

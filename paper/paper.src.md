@@ -44,7 +44,7 @@ Math: inline $...$ and display $$...$$ render both on GitHub and in pandoc.
 - Counters in the city index: {{claim.n_2012}} in 2012, {{claim.n_2024}} in 2024
   (sites with at least 250 complete days).
 - Cleaning: physical site vs device period, autumn DST duplicates, partial hours,
-  zero runs (README, "Technical notes on the data").
+  zero runs (`DATA_SOURCES.md`, "Technical notes on the data").
 
 # 3. Methods
 

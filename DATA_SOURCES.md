@@ -20,3 +20,13 @@ fetches them and records URL, SHA-256, size and retrieval time in
 
 Map views in the dashboard are drawn from OpenStreetMap data: © OpenStreetMap
 contributors, available under the Open Database License.
+
+## Technical notes on the data
+
+- `FK_STANDORT` in the counts is the location layer's `id1`, one **device period**. A physical site is the `abkuerzung` (e.g. `VZS_HOFW`, four device periods). The all-years Parquet has no `FK_ZAEHLER` column.
+- **Correction factors** come from the location layer (`korrekturfaktor`) and differ between device periods of the same site, so device periods are kept distinct.
+- **Autumn DST:** the repeated 02:00 hour appears as duplicate quarter-hour rows, which the publisher does not combine. They are summed, flagged and excluded from evaluation.
+- **Directions:** a device counts as two-directional only if most rows carry `VELO_OUT`.
+- **MeteoSwiss** hourly stamps are UTC and mark the end of the interval; they are shifted to interval start.
+- **Cantonal counters** use different sensors and site types. They enter only as inputs and training sites, flagged by source, and are never scored.
+- **Network:** OSM bicycle-permitted ways plus footways with explicit bicycle access; contraflow restored for one-way streets open to bikes (~4,200 edges). It is the current network for all years.
